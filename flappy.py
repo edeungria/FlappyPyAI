@@ -184,6 +184,7 @@ def showWelcomeAnimation():
 
 
 def mainGame(movementInfo):
+    print(movementInfo)
     score = playerIndex = loopIter = 0
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
