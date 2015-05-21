@@ -226,6 +226,10 @@ def mainGame(movementInfo):
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
+            # Replace this with the AI component
+            # if AISaysSo(frame), simulate the button press
+            # Probably have to move this outside this for event loop
+            # "Genetic Part" would need to take into account when / how to move
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                 if playery > -2 * IMAGES['player'][0].get_height():
                     playerVelY = playerFlapAcc
