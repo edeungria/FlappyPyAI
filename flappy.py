@@ -127,6 +127,8 @@ def main():
 
         movementInfo = showWelcomeAnimation()
         crashInfo = mainGame(movementInfo)
+        print "GAME OVER"
+        print "Score", crashInfo['score'];
         showGameOverScreen(crashInfo)
 
 
