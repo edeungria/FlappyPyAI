@@ -236,6 +236,23 @@ def mainGame(movementInfo):
                     playerFlapped = True
                     SOUNDS['wing'].play()
 
+        # get target position
+        averageHeight = 0
+        for uPipe, lPipe in zip(upperPipes, lowerPipes):
+            midpoint = (uPipe['y'] + lPipe['y'])/2
+            if playerx < uPipe['x']:
+                averageHeight = (averageHeight + midpoint)/2
+
+        target = SCREENHEIGHT/2
+        if averageHeight > 0:
+            target = averageHeight
+
+        # decide whether or not to flap
+        if playery < target:
+            playerVelY = playerFlapAcc
+            playerFlapped = True
+            SOUNDS['wing'].play()
+
         # check for crash here
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
                                upperPipes, lowerPipes)
