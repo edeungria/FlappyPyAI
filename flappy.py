@@ -240,9 +240,9 @@ def mainGame(movementInfo):
         averageHeight = 0
 
         if playerx < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
-            averageHeight = lowerPipes[0]['y'] - PIPEGAPSIZE/2
+            averageHeight = lowerPipes[0]['y'] - IMAGES['player'][0].get_height()*1.5
         else:
-            averageHeight = lowerPipes[1]['y'] - PIPEGAPSIZE/2
+            averageHeight = lowerPipes[1]['y'] - IMAGES['player'][0].get_height()*1.5
         
 #        for lPipe in lowerPipes:
 #            midpoint = (lPipe['y'] - PIPEGAPSIZE/2)
@@ -254,7 +254,7 @@ def mainGame(movementInfo):
             target = averageHeight
 
         # decide whether or not to flap
-        if playery > target:
+        if playery + playerVelY > target:
             playerVelY = playerFlapAcc
             playerFlapped = True
             SOUNDS['wing'].play()
