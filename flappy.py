@@ -297,9 +297,9 @@ def mainGame(movementInfo):
 
             # press space or up to flap
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                if player1y > -2 * IMAGES['player1'][0].get_height():
-                    player1VelY = player1FlapAcc
-                    player1Flapped = True
+                #if player1y > -2 * IMAGES['player1'][0].get_height():
+                    #player1VelY = player1FlapAcc
+                    #player1Flapped = True
                 if player2y > -2 * IMAGES['player2'][0].get_height():
                     player2VelY = player2FlapAcc
                     player2Flapped = True               
