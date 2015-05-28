@@ -58,17 +58,41 @@ def main():
     pygame.display.set_caption('Flappy Bird')
 
     # numbers sprites for score display
-    IMAGES['numbers'] = (
-        pygame.image.load('assets/sprites/0.png').convert_alpha(),
-        pygame.image.load('assets/sprites/1.png').convert_alpha(),
-        pygame.image.load('assets/sprites/2.png').convert_alpha(),
-        pygame.image.load('assets/sprites/3.png').convert_alpha(),
-        pygame.image.load('assets/sprites/4.png').convert_alpha(),
-        pygame.image.load('assets/sprites/5.png').convert_alpha(),
-        pygame.image.load('assets/sprites/6.png').convert_alpha(),
-        pygame.image.load('assets/sprites/7.png').convert_alpha(),
-        pygame.image.load('assets/sprites/8.png').convert_alpha(),
-        pygame.image.load('assets/sprites/9.png').convert_alpha()
+    IMAGES['numbers1'] = (
+        pygame.image.load('assets/sprites/Player1Nums/0.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/1.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/2.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/3.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/4.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/5.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/6.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/7.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/8.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player1Nums/9.png').convert_alpha()
+    )
+    IMAGES['numbers2'] = (
+        pygame.image.load('assets/sprites/Player2Nums/0.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/1.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/2.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/3.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/4.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/5.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/6.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/7.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/8.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player2Nums/9.png').convert_alpha()
+    )
+    IMAGES['numbers3'] = (
+        pygame.image.load('assets/sprites/Player3Nums/0.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/1.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/2.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/3.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/4.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/5.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/6.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/7.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/8.png').convert_alpha(),
+        pygame.image.load('assets/sprites/Player3Nums/9.png').convert_alpha()
     )
 
     # game over sprite
@@ -297,9 +321,9 @@ def mainGame(movementInfo):
 
             # press space or up to flap
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                #if player1y > -2 * IMAGES['player1'][0].get_height():
-                    #player1VelY = player1FlapAcc
-                    #player1Flapped = True
+                if player1y > -2 * IMAGES['player1'][0].get_height():
+                    player1VelY = player1FlapAcc
+                    player1Flapped = True
                 if player2y > -2 * IMAGES['player2'][0].get_height():
                     player2VelY = player2FlapAcc
                     player2Flapped = True               
@@ -348,7 +372,7 @@ def mainGame(movementInfo):
 
             # decide whether or not to flap
             # if the next pipe is lower
-            if lowerPipes[0]['y'] > lowerPipes[1]['y']:
+            if lowerPipes[0]['y'] >= lowerPipes[1]['y']:
                 if player1y > target:
                     player1VelY = player1FlapAcc
                     player1Flapped = True
@@ -378,34 +402,8 @@ def mainGame(movementInfo):
                 player2VelY = player2FlapAcc
                 player2Flapped = True
 
-        ############################# Player3 AI
+    ##############################
 
-        if not dead3:
-            nextPipex = lowerPipes[0]['x']
-            nextPipe = 0
-            if nextPipex < player3x:
-                nextPipe = 1
-                nextPipex = lowerPipes[1]['x']
-            pipeWidth = IMAGES['pipe'][0].get_width()
-            pipeEnd = nextPipex + pipeWidth
-            distToNext = nextPipex - player3x
-
-            if distToNext < pipeWidth * 1.5:
-                if player3y > lowerPipes[nextPipe]['y'] - PIPEGAPSIZE / 3:
-                    player3VelY = player3FlapAcc
-                    print "flap via height"
-                    player3Flapped = True;
-
-            elif pipeEnd - player3x < pipeWidth:
-                player3VelY = player3FlapAcc
-                print "flap in pipe"
-                player3Flapped = True;
-                    
-            elif player3y > SCREENHEIGHT / 2:
-                player3VelY = player3FlapAcc
-                player3Flapped = True;
-
-    ##################################
         if dead1 and dead2 and dead3:
             return {
                 'y1': player1y,
@@ -501,13 +499,8 @@ def mainGame(movementInfo):
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
 
-        # print score so player overlaps the score
-        if score1 > score2 and score1 > score3:
-            showScore(score1)
-        elif score2 > score1 and score2 > score3:
-            showScore(score2)
-        else:
-            showScore(score3)
+        # print score
+        showScore(score1, score2, score3)
 
         # check which birds to display
         if not dead1 and not dead2 and not dead3:
@@ -536,27 +529,27 @@ def mainGame(movementInfo):
 def showGameOverScreen(crashInfo):
     """crashes the player down and shows gameover image"""
     if crashInfo['score1'] > crashInfo['score2'] and crashInfo['score1'] > crashInfo['score3']:
-        score = crashInfo['score1']
         playerx = SCREENWIDTH * 0.2
         playery = crashInfo['y1']
         playerHeight = IMAGES['player1'][0].get_height()
         playerVelY = crashInfo['player1VelY']
         playerAccY = 2
     elif crashInfo['score2'] > crashInfo['score1'] and crashInfo['score2'] > crashInfo['score3']:
-        score = crashInfo['score2']
         playerx = SCREENWIDTH * 0.2
         playery = crashInfo['y2']
         playerHeight = IMAGES['player2'][0].get_height()
         playerVelY = crashInfo['player2VelY']
         playerAccY = 2
     else:
-        score = crashInfo['score3']
         playerx = SCREENWIDTH * 0.2
         playery = crashInfo['y3']
         playerHeight = IMAGES['player3'][0].get_height()
         playerVelY = crashInfo['player3VelY']
         playerAccY = 2    
 
+    score1 = crashInfo['score1']
+    score2 = crashInfo['score2']
+    score3 = crashInfo['score3']
     basex = crashInfo['basex']
 
     upperPipes, lowerPipes = crashInfo['upperPipes'], crashInfo['lowerPipes']
@@ -597,7 +590,7 @@ def showGameOverScreen(crashInfo):
             SCREEN.blit(IMAGES['pipe'][1], (lPipe['x'], lPipe['y']))
 
         SCREEN.blit(IMAGES['base'], (basex, BASEY))
-        showScore(score)
+        showScore(score1, score2, score3)
         if crashInfo['score1'] > crashInfo['score2'] and crashInfo['score1'] > crashInfo['score3']:
             SCREEN.blit(IMAGES['player1'][1], (playerx,playery))
         elif crashInfo['score2'] > crashInfo['score1'] and crashInfo['score2'] > crashInfo['score3']:
@@ -636,19 +629,34 @@ def getRandomPipe():
     ]
 
 
-def showScore(score):
+def showScore(score1, score2, score3):
     """displays score in center of screen"""
-    scoreDigits = [int(x) for x in list(str(score))]
-    totalWidth = 0 # total width of all numbers to be printed
+    scoreDigits1 = [int(x) for x in list(str(score1))]
+    scoreDigits2 = [int(x) for x in list(str(score2))]
+    scoreDigits3 = [int(x) for x in list(str(score3))]
+    totalWidth1 = totalWidth2 = totalWidth3 = 0 # total width of all numbers to be printed
 
-    for digit in scoreDigits:
-        totalWidth += IMAGES['numbers'][digit].get_width()
+    for digit in scoreDigits1:
+        totalWidth1 += IMAGES['numbers1'][digit].get_width()
+    for digit in scoreDigits2:
+        totalWidth2 += IMAGES['numbers2'][digit].get_width()
+    for digit in scoreDigits3:
+        totalWidth3 += IMAGES['numbers3'][digit].get_width()
 
-    Xoffset = (SCREENWIDTH - totalWidth) / 2
 
-    for digit in scoreDigits:
-        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
-        Xoffset += IMAGES['numbers'][digit].get_width()
+    Xoffset1 = (SCREENWIDTH - totalWidth1) / 6
+    Xoffset2 = (SCREENWIDTH - totalWidth2) / 2
+    Xoffset3 = (SCREENWIDTH - totalWidth3) - ((SCREENWIDTH - totalWidth1) / 6)
+
+    for digit in scoreDigits1:
+        SCREEN.blit(IMAGES['numbers1'][digit], (Xoffset1, SCREENHEIGHT * 0.1))
+        Xoffset1 += IMAGES['numbers1'][digit].get_width()
+    for digit in scoreDigits2:
+        SCREEN.blit(IMAGES['numbers2'][digit], (Xoffset2, SCREENHEIGHT * 0.1))
+        Xoffset2 += IMAGES['numbers2'][digit].get_width()
+    for digit in scoreDigits3:
+        SCREEN.blit(IMAGES['numbers3'][digit], (Xoffset3, SCREENHEIGHT * 0.1))
+        Xoffset3 += IMAGES['numbers3'][digit].get_width()
 
 
 def checkCrash(player, upperPipes, lowerPipes):
