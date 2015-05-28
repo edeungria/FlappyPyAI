@@ -605,6 +605,8 @@ def showGameOverScreen(crashInfo):
         else:
             SCREEN.blit(IMAGES['player3'][1], (playerx,playery))
 
+        SCREEN.blit(IMAGES['gameover'], (SCREENWIDTH/2 - IMAGES['gameover'].get_width()/2, SCREENHEIGHT/2 - IMAGES['gameover'].get_height()/2))
+
         FPSCLOCK.tick(FPS)
         pygame.display.update()
 
