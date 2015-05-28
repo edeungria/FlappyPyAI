@@ -23,7 +23,7 @@ PLAYERS_LIST = (
         'assets/sprites/redbird-midflap.png',
         'assets/sprites/redbird-downflap.png',
     ),
-    # blue bird
+    # blue bird - Matt's AI
     (
         'assets/sprites/bluebird-upflap.png',
         'assets/sprites/bluebird-midflap.png',
@@ -351,7 +351,60 @@ def mainGame(movementInfo):
                 player1VelY = player1FlapAcc
                 player1Flapped = True
 
-    #############################
+    ############################# PLAYER2 AI
+        if not dead2:
+            # get target position
+            averageHeight = 0
+            firstLower = 0
+            firstx = 0
+            first = 0
+            
+            if player2x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
+                first = 0
+                firstx = lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width()
+                averageHeight = lowerPipes[0]['y'] - PIPEGAPSIZE/2
+                firstLower = lowerPipes[0]['y']
+            else:
+                first = 1
+                firstx = lowerPipes[1]['x'] + IMAGES['pipe'][0].get_width()
+                averageHeight = lowerPipes[1]['y'] - PIPEGAPSIZE/2
+                firstLower = lowerPipes[1]['y']
+
+            for lPipe in lowerPipes[first+1:]:
+                midpoint = (lPipe['y'] - PIPEGAPSIZE/2)/firstLower
+                averageHeight = averageHeight + midpoint
+
+            target = SCREENHEIGHT/2 # target middle if no pipes are around
+            if averageHeight > 0:
+                target = averageHeight
+
+            # decide whether or not to flap
+            if player2y > target and firstx - player2x > IMAGES['pipe'][0].get_width()*(3/4):
+                player2VelY = player2FlapAcc
+                player2Flapped = True
+
+            """
+            targ = 0
+            numPipes = 0
+            firstPipeMin = 0
+            firstPipeMax = 0
+
+            for lPipe in lowerPipes:
+                midpoint = (lPipe['y'] - PIPEGAPSIZE/2)
+                if player2x < lPipe['x']:
+                    if numPipes == 0:
+                        firstPipeMin = lPipe['y']
+                        firstPipeMax = firstPipeMin + PIPEGAPSIZE
+                        targ = midpoint
+                    else:
+                        targ = targ + midpoint
+                    numPipes += 1
+
+            if numPipes == 0:
+                targ = targ/numPipes
+            else:
+                targ = SCREENHEIGHT/2
+                """
 
         if dead1 and dead2 and dead3:
             return {
