@@ -402,7 +402,39 @@ def mainGame(movementInfo):
                 player2VelY = player2FlapAcc
                 player2Flapped = True
 
-    ##############################
+        ############################# Player3 AI
+
+        if not dead3:
+            nextPipex = lowerPipes[0]['x']
+            nextPipey = lowerPipes[0]['y']
+            nextPipe = 0
+            #if nextPipex < player3x:
+            #    nextPipe = 1
+            #    nextPipey = lowerPipes[1]['y']
+            #    nextPipex = lowerPipes[1]['x']
+                
+            pipeWidth = IMAGES['pipe'][0].get_width()
+            pipeEnd = nextPipex + pipeWidth
+            distToNext = nextPipex - player3x
+
+            #Outside a pipe and below lowerPipe
+            if distToNext < pipeWidth and player3y > nextPipey:
+                    print "out"
+                    player3VelY = player3FlapAcc
+                    player3Flapped = True;
+
+            #Above a pipe
+            if player3y > nextPipey:
+                print "in"
+                player3VelY = player3FlapAcc
+                player3Flapped = True;
+
+            #Beginning to not die
+            elif player3y > SCREENHEIGHT / 2:
+                player3VelY = player3FlapAcc
+                player3Flapped = True;
+
+        ##################################
 
         if dead1 and dead2 and dead3:
             return {
