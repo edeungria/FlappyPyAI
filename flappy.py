@@ -354,57 +354,21 @@ def mainGame(movementInfo):
     ############################# PLAYER2 AI
         if not dead2:
             # get target position
-            averageHeight = 0
-            firstLower = 0
-            firstx = 0
-            first = 0
+            average1Height = average2Height = 0
             
-            if player2x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
-                first = 0
-                firstx = lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width()
-                averageHeight = lowerPipes[0]['y'] - PIPEGAPSIZE/2
-                firstLower = lowerPipes[0]['y']
+            if player1x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
+                average1Height = lowerPipes[0]['y'] - PIPEGAPSIZE/2       
             else:
-                first = 1
-                firstx = lowerPipes[1]['x'] + IMAGES['pipe'][0].get_width()
-                averageHeight = lowerPipes[1]['y'] - PIPEGAPSIZE/2
-                firstLower = lowerPipes[1]['y']
-
-            for lPipe in lowerPipes[first+1:]:
-                midpoint = (lPipe['y'] - PIPEGAPSIZE/2)/firstLower
-                averageHeight = averageHeight + midpoint
+                average1Height = lowerPipes[1]['y'] - PIPEGAPSIZE/2
 
             target = SCREENHEIGHT/2 # target middle if no pipes are around
-            if averageHeight > 0:
-                target = averageHeight
+            if average1Height > 0:
+                target = average1Height
 
             # decide whether or not to flap
-            if player2y > target and firstx - player2x > IMAGES['pipe'][0].get_width()*(3/4):
-                player2VelY = player2FlapAcc
-                player2Flapped = True
-
-            """
-            targ = 0
-            numPipes = 0
-            firstPipeMin = 0
-            firstPipeMax = 0
-
-            for lPipe in lowerPipes:
-                midpoint = (lPipe['y'] - PIPEGAPSIZE/2)
-                if player2x < lPipe['x']:
-                    if numPipes == 0:
-                        firstPipeMin = lPipe['y']
-                        firstPipeMax = firstPipeMin + PIPEGAPSIZE
-                        targ = midpoint
-                    else:
-                        targ = targ + midpoint
-                    numPipes += 1
-
-            if numPipes == 0:
-                targ = targ/numPipes
-            else:
-                targ = SCREENHEIGHT/2
-                """
+            if player1y > target:
+                player1VelY = player1FlapAcc
+                player1Flapped = True
 
         if dead1 and dead2 and dead3:
             return {
