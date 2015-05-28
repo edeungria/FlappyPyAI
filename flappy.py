@@ -330,45 +330,55 @@ def mainGame(movementInfo):
     ############################# PLAYER1 AI
         if not dead1:
             # get target position
-            average1Height = average2Height = 0
+            average1Height = 0
             
             if player1x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
                 average1Height = lowerPipes[0]['y'] - PIPEGAPSIZE/2       
             else:
                 average1Height = lowerPipes[1]['y'] - PIPEGAPSIZE/2
-                
-    #        for lPipe in lowerPipes:
-    #            midpoint = (lPipe['y'] - PIPEGAPSIZE/2)
-    #            if playerx < lPipe['x']:
-    #                averageHeight = (averageHeight + midpoint)/2
 
             target = SCREENHEIGHT/2 # target middle if no pipes are around
             if average1Height > 0:
                 target = average1Height
 
-            # decide whether or not to flap
-            if player1y > target:
-                player1VelY = player1FlapAcc
-                player1Flapped = True
+            if player1x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
+                edgeOfPipe = lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width()
+            else:
+                edgeOfPipe = lowerPipes[1]['x'] + IMAGES['pipe'][1].get_width()
 
+            # decide whether or not to flap
+            # if the next pipe is lower
+            if lowerPipes[0]['y'] > lowerPipes[1]['y']:
+                if player1y > target:
+                    player1VelY = player1FlapAcc
+                    player1Flapped = True
+            # if the next pipe is higher or equal to the first pipe
+            else:
+                if player1y > target and edgeOfPipe - player1x > 6:
+                    player1VelY = player1FlapAcc
+                    player1Flapped = True
+
+    #############################
     ############################# PLAYER2 AI
         if not dead2:
             # get target position
-            average1Height = average2Height = 0
+            average2Height = 0
             
-            if player1x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
-                average1Height = lowerPipes[0]['y'] - PIPEGAPSIZE/2       
+            if player2x < lowerPipes[0]['x'] + IMAGES['pipe'][0].get_width():
+                average2Height = lowerPipes[0]['y'] - PIPEGAPSIZE/2       
             else:
-                average1Height = lowerPipes[1]['y'] - PIPEGAPSIZE/2
+                average2Height = lowerPipes[1]['y'] - PIPEGAPSIZE/2
 
             target = SCREENHEIGHT/2 # target middle if no pipes are around
-            if average1Height > 0:
-                target = average1Height
+            if average2Height > 0:
+                target = average2Height
 
             # decide whether or not to flap
-            if player1y > target:
-                player1VelY = player1FlapAcc
-                player1Flapped = True
+            if player2y > target:
+                player2VelY = player2FlapAcc
+                player2Flapped = True
+
+    ##############################
 
         if dead1 and dead2 and dead3:
             return {
