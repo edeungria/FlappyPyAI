@@ -1,7 +1,6 @@
 from itertools import cycle
 import random
 import sys
-import thread
 
 import pygame
 from pygame.locals import *
