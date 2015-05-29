@@ -355,7 +355,7 @@ def mainGame(movementInfo):
                 SOUNDS['hit'].play()
 
     ############################# PLAYER1 AI
-        
+    ############################# aka Alec's
         if not dead1:
             # get target position
             average1Height = 0
@@ -375,18 +375,19 @@ def mainGame(movementInfo):
                 edgeOfPipe = lowerPipes[1]['x'] + IMAGES['pipe'][1].get_width()
 
             # decide whether or not to flap
-            # if the next pipe is lower
+            # if the next pipe is higher or equal to the first pipe
             if lowerPipes[0]['y'] >= lowerPipes[1]['y']:
                 if player1y > target:
                     player1VelY = player1FlapAcc
                     player1Flapped = True
-            # if the next pipe is higher or equal to the first pipe
+            # if the next pipe is lower
             else:
                 if player1y > target and edgeOfPipe - player1x > 6:
                     player1VelY = player1FlapAcc
                     player1Flapped = True
 
     ############################# PLAYER2 AI
+    ############################# aka Matt's
         if not dead2:
             # get target position
             average2Height = 0
@@ -406,28 +407,34 @@ def mainGame(movementInfo):
                 player2Flapped = True
 
         ############################# Player3 AI
+        ############################# aka Elison's Panicky bird
 
         if not dead3:
             pipeWidth = IMAGES['pipe'][0].get_width()
-            
+
+            #Which pipe is next? :O
             nextPipex = lowerPipes[0]['x']
             nextPipey = lowerPipes[0]['y']
             if nextPipex < player3x - pipeWidth / 1.6:
                 nextPipex = lowerPipes[1]['x']
                 nextPipey = lowerPipes[1]['y']
-                
-            pipeEnd = nextPipex + pipeWidth
+            
+            distToPipeEnd = nextPipex + pipeWidth - player3x
             distToNext = nextPipex - player3x
 
             #Outside a pair of pipes and below lowerPipe
-            if 0 < distToNext and player3y > nextPipey - PIPEGAPSIZE / 2.25:
-                player3VelY = player3FlapAcc
-                player3Flapped = True
+            #Aim for a little below the center
+            if 0 < distToNext:
+                if player3y > nextPipey - PIPEGAPSIZE / 2.4:
+                    player3VelY = player3FlapAcc
+                    player3Flapped = True
 
             #Inside a pair of pipes and about to hit a pipe
-            elif 0 <= pipeEnd - player3x <= pipeWidth and player3y > nextPipey - PIPEGAPSIZE / 2.3:
-                player3VelY = player3FlapAcc
-                player3Flapped = True
+            #For the love of God stay above the bottom pipe
+            elif 0 <= distToPipeEnd <= pipeWidth:
+                if player3y > nextPipey - PIPEGAPSIZE / 2.3:
+                    player3VelY = player3FlapAcc
+                    player3Flapped = True
 
         ##################################
 
