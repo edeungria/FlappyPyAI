@@ -1,6 +1,7 @@
 from itertools import cycle
 import random
 import sys
+import thread
 
 import pygame
 from pygame.locals import *
@@ -320,16 +321,16 @@ def mainGame(movementInfo):
                 sys.exit()
 
             # press space or up to flap
-            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                if player1y > -2 * IMAGES['player1'][0].get_height():
-                    player1VelY = player1FlapAcc
-                    player1Flapped = True
-                if player2y > -2 * IMAGES['player2'][0].get_height():
-                    player2VelY = player2FlapAcc
-                    player2Flapped = True               
-                if player3y > -2 * IMAGES['player3'][0].get_height():
-                    player3VelY = player3FlapAcc
-                    player3Flapped = True 
+##            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+##                if player1y > -2 * IMAGES['player1'][0].get_height():
+##                    player1VelY = player1FlapAcc
+##                    player1Flapped = True
+##                if player2y > -2 * IMAGES['player2'][0].get_height():
+##                    player2VelY = player2FlapAcc
+##                    player2Flapped = True               
+##                if player3y > -2 * IMAGES['player3'][0].get_height():
+##                    player3VelY = player3FlapAcc
+##                    player3Flapped = True 
 
         # check for crash here
         if not dead1:
@@ -337,21 +338,25 @@ def mainGame(movementInfo):
                                    upperPipes, lowerPipes)
             dead1 = crashTest1[0]
             if dead1:
+                print "DEAD RED"
                 SOUNDS['hit'].play()
         if not dead2:
             crashTest2 = checkCrash({'x': player2x, 'y': player2y, 'index': player2Index, 'playerNum': 2},
                                    upperPipes, lowerPipes)
             dead2 = crashTest2[0]
             if dead2:
+                print "DEAD BLUE"
                 SOUNDS['hit'].play()
         if not dead3:
             crashTest3 = checkCrash({'x': player3x, 'y': player3y, 'index': player3Index, 'playerNum': 3},
                                    upperPipes, lowerPipes)
             dead3 = crashTest3[0]
             if dead3:
+                print "DEAD YELLOW"
                 SOUNDS['hit'].play()
 
     ############################# PLAYER1 AI
+        
         if not dead1:
             # get target position
             average1Height = 0
@@ -382,7 +387,6 @@ def mainGame(movementInfo):
                     player1VelY = player1FlapAcc
                     player1Flapped = True
 
-    #############################
     ############################# PLAYER2 AI
         if not dead2:
             # get target position
@@ -405,34 +409,26 @@ def mainGame(movementInfo):
         ############################# Player3 AI
 
         if not dead3:
+            pipeWidth = IMAGES['pipe'][0].get_width()
+            
             nextPipex = lowerPipes[0]['x']
             nextPipey = lowerPipes[0]['y']
-            nextPipe = 0
-            #if nextPipex < player3x:
-            #    nextPipe = 1
-            #    nextPipey = lowerPipes[1]['y']
-            #    nextPipex = lowerPipes[1]['x']
+            if nextPipex < player3x - pipeWidth / 1.6:
+                nextPipex = lowerPipes[1]['x']
+                nextPipey = lowerPipes[1]['y']
                 
-            pipeWidth = IMAGES['pipe'][0].get_width()
             pipeEnd = nextPipex + pipeWidth
             distToNext = nextPipex - player3x
 
-            #Outside a pipe and below lowerPipe
-            if distToNext < pipeWidth and player3y > nextPipey:
-                    print "out"
-                    player3VelY = player3FlapAcc
-                    player3Flapped = True;
-
-            #Above a pipe
-            if player3y > nextPipey:
-                print "in"
+            #Outside a pair of pipes and below lowerPipe
+            if 0 < distToNext and player3y > nextPipey - PIPEGAPSIZE / 2.25:
                 player3VelY = player3FlapAcc
-                player3Flapped = True;
+                player3Flapped = True
 
-            #Beginning to not die
-            elif player3y > SCREENHEIGHT / 2:
+            #Inside a pair of pipes and about to hit a pipe
+            elif 0 <= pipeEnd - player3x <= pipeWidth and player3y > nextPipey - PIPEGAPSIZE / 2.3:
                 player3VelY = player3FlapAcc
-                player3Flapped = True;
+                player3Flapped = True
 
         ##################################
 
