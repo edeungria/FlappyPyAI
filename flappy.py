@@ -21,19 +21,19 @@ IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 # list of all possible players (tuple of 3 positions of flap)
 PLAYERS_LIST = (
-    # red bird - Alec's AI
+    # red bird - Player 1
     (
         'assets/sprites/redbird-upflap.png',
         'assets/sprites/redbird-midflap.png',
         'assets/sprites/redbird-downflap.png',
     ),
-    # blue bird - Matt's AI
+    # blue bird - Player 2
     (
         'assets/sprites/bluebird-upflap.png',
         'assets/sprites/bluebird-midflap.png',
         'assets/sprites/bluebird-downflap.png',
     ),
-    # yellow bird
+    # yellow bird - Player 3
     (
         'assets/sprites/yellowbird-upflap.png',
         'assets/sprites/yellowbird-midflap.png',
@@ -359,7 +359,7 @@ def mainGame(movementInfo):
                 SOUNDS['hit'].play()
 
     ############################# PLAYER1 AI
-    ############################# aka Alec's
+    ############################# aka The Dropper
         if not dead1:
             # get target position
             average1Height = 0
@@ -391,7 +391,7 @@ def mainGame(movementInfo):
                     player1Flapped = True
 
     ############################# PLAYER2 AI
-    ############################# aka Matt's
+    ############################# aka The Simple One
         if not dead2:
             # get target position
             average2Height = 0
@@ -411,7 +411,7 @@ def mainGame(movementInfo):
                 player2Flapped = True
 
         ############################# Player3 AI
-        ############################# aka Elison's Panicky bird
+        ############################# aka The Panicky One
 
         if not dead3:
             pipeWidth = IMAGES['pipe'][0].get_width()
