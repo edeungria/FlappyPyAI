@@ -1,3 +1,7 @@
+# Flappy Bird AI
+# Alec Branch, Matt Juskelis, Elison Deungria
+# source code from https://github.com/sourabhv/FlappyBirdClone
+
 from itertools import cycle
 import random
 import sys
